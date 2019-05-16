@@ -1,12 +1,13 @@
-package pl.ejaksla.onlinejudge.tempHappyPath;
+package pl.ejaksla.onlinejudge.domain.services.impl;
 
 import org.junit.jupiter.api.Test;
+import pl.ejaksla.onlinejudge.tempHappyPath.Program;
 
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ProgramTest {
+public class ProgramTest {
 
     @Test
     public void TestCase1() {

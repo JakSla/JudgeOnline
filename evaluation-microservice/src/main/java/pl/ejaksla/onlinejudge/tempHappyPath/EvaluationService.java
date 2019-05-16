@@ -7,6 +7,7 @@ import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
 import org.junit.platform.launcher.listeners.TestExecutionSummary;
+import pl.ejaksla.onlinejudge.domain.services.impl.ProgramTest;
 
 import javax.tools.*;
 import java.io.IOException;

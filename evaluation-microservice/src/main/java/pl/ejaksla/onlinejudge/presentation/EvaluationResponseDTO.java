@@ -1,4 +1,4 @@
-package pl.ejaksla.onlinejudge.tempHappyPath;
+package pl.ejaksla.onlinejudge.presentation;
 
 import java.util.StringJoiner;
 import static com.google.common.base.Preconditions.checkArgument;
