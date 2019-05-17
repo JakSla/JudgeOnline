@@ -15,6 +15,8 @@ public class EvaluationResult {
     private String testsResult;
 
     private String submittedCode;
+    private String hiddenTestCasesCode;
+    private String publicTestCasesCode;
     private String programmingLanguage;
     private Boolean isFinalSubmission;
 
