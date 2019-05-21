@@ -6,7 +6,11 @@ import pl.ejaksla.onlinejudge.domain.model.Submission;
 
 public interface ScoringService {
 
-    String evaluateSolution(String submittedCode, String problemID, boolean isFinalSubmission);
-    //TODO should problem be a part of submission?
+    //TODO should problemID and userID be a part of submission?
+    String evaluateSolution(final String submittedCode,
+                            final String hiddenTestCases,
+                            final String publicTestCases,
+                            final String problemID,
+                            final boolean isFinalSubmission);
 
 }

@@ -20,20 +20,24 @@ public class EvaluationController {
     public EvaluationResponseDTO evaluate(@RequestParam(name = "problemId") final String problemID,
                                           @RequestParam(name = "programmingLanguage") final String programmingLanguage,
                                           @RequestParam(name = "isFinalSubmission") final boolean isFinalSubmission,
-                                          @RequestBody final String submittedCode) {
+                                          @RequestBody final EvaluationRequestDTO evaluationRequest) {
 
         // 1. Retrieved arguments
         System.out.println("ProblemID = " + problemID);
         System.out.println("Programming language is " + programmingLanguage);
         System.out.println("Is it final submission? " + isFinalSubmission);
         System.out.println("Submitted code:");
-        System.out.println(submittedCode);
+        System.out.println(evaluationRequest.getSubmittedCode());
+        System.out.println("Hidden tests code:");
+        System.out.println(evaluationRequest.getHiddenTestCasesCode());
+        System.out.println("Public tests code:");
+        System.out.println(evaluationRequest.getPublicTestCasesCode());
 
         final String result;
         switch (programmingLanguage) {
-            case "JAVA":
-                result = javaScoringServiceImpl.evaluateSolution(submittedCode, problemID, isFinalSubmission);
-                break;
+//            case "JAVA":
+//                result = javaScoringServiceImpl.evaluateSolution(evaluationRequest.getSubmittedCode(), problemID, isFinalSubmission);
+//                break;
             case "CPP":
                 result = "NOT IMPLEMENTED";
                 break;

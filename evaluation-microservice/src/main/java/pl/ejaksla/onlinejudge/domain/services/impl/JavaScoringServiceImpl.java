@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import pl.ejaksla.onlinejudge.domain.services.ScoringService;
 
 import javax.tools.*;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
 
@@ -20,13 +22,16 @@ import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
 public class JavaScoringServiceImpl implements ScoringService {
 
     @Override
-    public String evaluateSolution(final String submittedCode, final String problemID, final boolean isFinalSubmission) {
-        final boolean compilationResult = compile(submittedCode);
+    public String evaluateSolution(final String submittedCode,
+                                   final String hiddenTestCases,
+                                   final String publicTestCases,
+                                   final String problemID,
+                                   final boolean isFinalSubmission) {
+        final boolean compilationResult = compile(submittedCode); //TODO handle compilation failure and report
         final String testResults;
 
         if (compilationResult) {
-                // run hidden test cases if this is final submission
-                testResults = test(submittedCode, isFinalSubmission);
+            testResults = test(submittedCode, hiddenTestCases, publicTestCases, isFinalSubmission);
         } else {
             return "COMPILATION FAILED";
         }
@@ -35,6 +40,29 @@ public class JavaScoringServiceImpl implements ScoringService {
     }
 
     private boolean compile(final String submittedCode) {
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
+        JavaFileObject file = new JavaSourceFromString("Program", submittedCode);
+        Iterable<? extends JavaFileObject> compilationUnits = Collections.singletonList(file);
+        JavaCompiler.CompilationTask task = compiler.getTask(null, null, diagnostics, null, null, compilationUnits);
+
+        boolean result = task.call();
+        //TODO handle failed compilation
+        for (Diagnostic diagnostic : diagnostics.getDiagnostics()) {
+            System.out.println("Diagnostics, only in case of failure to compile");
+            System.out.println(diagnostic.getCode());
+            System.out.println(diagnostic.getKind());
+            System.out.println(diagnostic.getPosition());
+            System.out.println(diagnostic.getStartPosition());
+            System.out.println(diagnostic.getEndPosition());
+            System.out.println(diagnostic.getSource());
+            System.out.println(diagnostic.getMessage(null)); // error message
+        }
+        System.out.println("Compilation: " + result);
+        return result;
+    }
+
+    public JavaFileObject compileJava(final String submittedCode) throws IOException {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
         JavaFileObject file = new JavaSourceFromString("Program", submittedCode);
@@ -54,7 +82,8 @@ public class JavaScoringServiceImpl implements ScoringService {
             System.out.println(diagnostic.getMessage(null)); // error message
         }
         System.out.println("Compilation: " + result);
-        return result;
+        System.out.println(file.getCharContent(true));
+        return file;
     }
 
     /**
@@ -62,10 +91,13 @@ public class JavaScoringServiceImpl implements ScoringService {
      * @param isFinalSubmission whether to run full hidden test cases suite
      * @return summary of test execution
      */
-    private String test(String submittedCode, final boolean isFinalSubmission) {
+    private String test(final String submittedCode,
+                        final String hiddenTestCases,
+                        final String publicTestCases,
+                        final boolean isFinalSubmission) {
         //TODO run full hidden tests if is final, sample test case otherwise
         //TODO handle errors
-        RunJUnit5TestsFromJava runner = new RunJUnit5TestsFromJava();
+        RunJUnit5TestsFromJava runner = new RunJUnit5TestsFromJava(hiddenTestCases);
         runner.runOne();
         TestExecutionSummary summary = runner.listener.getSummary();
         System.out.println("summary: " + summary.getTestsSucceededCount());
@@ -89,17 +121,4 @@ public class JavaScoringServiceImpl implements ScoringService {
         }
     }
 
-    class RunJUnit5TestsFromJava {
-        SummaryGeneratingListener listener = new SummaryGeneratingListener();
-
-        void runOne() {
-            LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
-                    .selectors(selectClass(ProgramTest.class))
-                    .build();
-            Launcher launcher = LauncherFactory.create();
-            TestPlan testPlan = launcher.discover(request);
-            launcher.registerTestExecutionListeners(listener);
-            launcher.execute(request);
-        }
-    }
 }
