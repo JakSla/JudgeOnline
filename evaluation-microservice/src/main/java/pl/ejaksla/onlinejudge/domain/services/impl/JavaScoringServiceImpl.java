@@ -63,13 +63,16 @@ public class JavaScoringServiceImpl implements ScoringService {
             out.println(submittedCode);
         }
 
-        List<String> params = new ArrayList<>();
-        params.add("C:\\Program Files\\Java\\jdk-11.0.2\\bin\\java.exe");
-        params.add("C:\\Users\\ejaksla\\Desktop\\ProgramNew.java");
-        List<String> splittledInput = Arrays.asList(input.split(" "));
-        params.addAll(splittledInput);
 
-        ProcessBuilder builder = new ProcessBuilder(params);
+        List<String> inputParams = new ArrayList<>();
+        inputParams.add("C:\\Program Files\\Java\\jdk-11.0.2\\bin\\java.exe");
+        inputParams.add("C:\\Users\\ejaksla\\Desktop\\ProgramNew.java");
+
+        //TODO make sure that input can be handled via System.in, not via args
+        List<String> splittledInput = Arrays.asList(input.split(" "));
+        inputParams.addAll(splittledInput);
+
+        ProcessBuilder builder = new ProcessBuilder(inputParams);
         builder.redirectErrorStream(true);
         Process p = builder.start();
 
