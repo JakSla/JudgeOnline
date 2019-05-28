@@ -1,48 +1,35 @@
 package pl.ejaksla.onlinejudge.domain.services.impl;
 
-import org.junit.platform.launcher.Launcher;
-import org.junit.platform.launcher.LauncherDiscoveryRequest;
-import org.junit.platform.launcher.TestPlan;
-import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
-import org.junit.platform.launcher.core.LauncherFactory;
-import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
-import org.junit.platform.launcher.listeners.TestExecutionSummary;
 import org.springframework.stereotype.Service;
 import pl.ejaksla.onlinejudge.domain.services.ScoringService;
 
 import javax.tools.*;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Collections;
-
-import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
+import java.util.*;
 
 @Service
 public class JavaScoringServiceImpl implements ScoringService {
 
     @Override
     public String evaluateSolution(final String submittedCode,
-                                   final String hiddenTestCases,
-                                   final String publicTestCases,
-                                   final String problemID,
-                                   final boolean isFinalSubmission) {
-        final boolean compilationResult = compile(submittedCode); //TODO handle compilation failure and report
-        final String testResults;
-
-        if (compilationResult) {
-            testResults = test(submittedCode, hiddenTestCases, publicTestCases, isFinalSubmission);
-        } else {
-            return "COMPILATION FAILED";
+                                   final String input,
+                                   final String output) {
+        String testResults = null;
+        try {
+            testResults = testSubmission(submittedCode, input, output);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        return "OK: " + testResults;
+        return testResults;
     }
 
+    //TODO separate compile from test?
     private boolean compile(final String submittedCode) {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
-        JavaFileObject file = new JavaSourceFromString("Program", submittedCode);
+        JavaFileObject file = new JavaSourceFromString("ProgramNew2", submittedCode);
         Iterable<? extends JavaFileObject> compilationUnits = Collections.singletonList(file);
         JavaCompiler.CompilationTask task = compiler.getTask(null, null, diagnostics, null, null, compilationUnits);
 
@@ -62,51 +49,51 @@ public class JavaScoringServiceImpl implements ScoringService {
         return result;
     }
 
-    public JavaFileObject compileJava(final String submittedCode) throws IOException {
-        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
-        JavaFileObject file = new JavaSourceFromString("Program", submittedCode);
-        Iterable<? extends JavaFileObject> compilationUnits = Arrays.asList(file);
-        JavaCompiler.CompilationTask task = compiler.getTask(null, null, diagnostics, null, null, compilationUnits);
-
-        boolean result = task.call();
-        //TODO handle failed compilation
-        for (Diagnostic diagnostic : diagnostics.getDiagnostics()) {
-            System.out.println("Diagnostics, only in case of failure to compile");
-            System.out.println(diagnostic.getCode());
-            System.out.println(diagnostic.getKind());
-            System.out.println(diagnostic.getPosition());
-            System.out.println(diagnostic.getStartPosition());
-            System.out.println(diagnostic.getEndPosition());
-            System.out.println(diagnostic.getSource());
-            System.out.println(diagnostic.getMessage(null)); // error message
-        }
-        System.out.println("Compilation: " + result);
-        System.out.println(file.getCharContent(true));
-        return file;
-    }
-
     /**
-     * @param submittedCode
-     * @param isFinalSubmission whether to run full hidden test cases suite
-     * @return summary of test execution
+     * @param submittedCode submitted code
+     * @param input         input to testSubmission sumbitted code
+     * @param output        expected output
+     * @return summary of testSubmission execution
      */
-    private String test(final String submittedCode,
-                        final String hiddenTestCases,
-                        final String publicTestCases,
-                        final boolean isFinalSubmission) {
-        //TODO run full hidden tests if is final, sample test case otherwise
-        //TODO handle errors
-        RunJUnit5TestsFromJava runner = new RunJUnit5TestsFromJava(hiddenTestCases);
-        runner.runOne();
-        TestExecutionSummary summary = runner.listener.getSummary();
-        System.out.println("summary: " + summary.getTestsSucceededCount());
-        return "" + summary.getTestsSucceededCount();
+    public String testSubmission(final String submittedCode,
+                                 final String input,
+                                 final String output) throws IOException {
+
+        try (PrintWriter out = new PrintWriter("C:\\Users\\ejaksla\\Desktop\\ProgramNew.java")) {
+            out.println(submittedCode);
+        }
+
+        List<String> params = new ArrayList<>();
+        params.add("C:\\Program Files\\Java\\jdk-11.0.2\\bin\\java.exe");
+        params.add("C:\\Users\\ejaksla\\Desktop\\ProgramNew.java");
+        List<String> splittledInput = Arrays.asList(input.split(" "));
+        params.addAll(splittledInput);
+
+        ProcessBuilder builder = new ProcessBuilder(params);
+        builder.redirectErrorStream(true);
+        Process p = builder.start();
+
+        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        StringBuilder sb = new StringBuilder();
+
+        while (true) {
+            String line = r.readLine();
+            if (line == null) {
+                break;
+            }
+            sb.append(line);
+        }
+        final String answer = sb.toString();
+
+        if (answer.equals(output)) {
+            return "CORRECT ANSWER: " + answer;
+        } else {
+            return "INCORRECT ANSWER: " + answer;
+        }
     }
 
 
     //HELPER CLASSES
-    //Helper class for test execution
     class JavaSourceFromString extends SimpleJavaFileObject {
         final String code;
 

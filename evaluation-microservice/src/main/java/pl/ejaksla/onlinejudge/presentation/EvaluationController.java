@@ -17,27 +17,27 @@ public class EvaluationController {
     }
 
     @PostMapping("/evaluate")
-    public EvaluationResponseDTO evaluate(@RequestParam(name = "problemId") final String problemID,
+    public EvaluationResponseDTO evaluate(@RequestParam(name = "input") final String input,
+                                          @RequestParam(name = "output") final String output,
                                           @RequestParam(name = "programmingLanguage") final String programmingLanguage,
-                                          @RequestParam(name = "isFinalSubmission") final boolean isFinalSubmission,
-                                          @RequestBody final EvaluationRequestDTO evaluationRequest) {
-
-        // 1. Retrieved arguments
-        System.out.println("ProblemID = " + problemID);
-        System.out.println("Programming language is " + programmingLanguage);
-        System.out.println("Is it final submission? " + isFinalSubmission);
+                                          @RequestBody final String submittedCode) {
+        //TODO Put everything into JSON
+        //TODO Base64 submitted code
+        System.out.println("Programming language is :");
+        System.out.println(programmingLanguage);
         System.out.println("Submitted code:");
-        System.out.println(evaluationRequest.getSubmittedCode());
-        System.out.println("Hidden tests code:");
-        System.out.println(evaluationRequest.getHiddenTestCasesCode());
-        System.out.println("Public tests code:");
-        System.out.println(evaluationRequest.getPublicTestCasesCode());
+        System.out.println(submittedCode);
+        System.out.println("Input:");
+        System.out.println(input);
+        System.out.println("Output:");
+        System.out.println(output);
 
+        //TODO create wrapper class to have status, results, execution time, error message etc
         final String result;
         switch (programmingLanguage) {
-//            case "JAVA":
-//                result = javaScoringServiceImpl.evaluateSolution(evaluationRequest.getSubmittedCode(), problemID, isFinalSubmission);
-//                break;
+            case "JAVA":
+                result = javaScoringServiceImpl.evaluateSolution(submittedCode,input, output);
+                break;
             case "CPP":
                 result = "NOT IMPLEMENTED";
                 break;
@@ -45,42 +45,10 @@ public class EvaluationController {
                 result = "NOT IMPLEMENTED";
                 break;
             default:
-                result = "empty";
+                result = "PROGRAMMING LANGUAGE NOT AVAILABLE";
         }
 
         return new EvaluationResponseDTO(EvaluationResponseDTO.Status.OK, result);
-
-        // 2. For a given question either:
-        /**
-         * A) execute everything in given file (have a 1 file) where just Solution() method body is visible to edit
-         * and test cases are hardcoded within this 1 file. Execution would be via main() method in this file.
-         *
-         * B) have separated file with test cases and execute them as well via gradle/maven? or something.
-         *
-         * in both cases input from web/file needs to be incorporated to the file sent for compilation/evaluation.
-         */
-
-        /** Example file:
-         * import java.util.HashMap;
-         *
-         * class Program.java { //unchangable
-         *   public static int[] twoNumberSum2(int[] array, int targetSum) { //unchangable
-         *     HashMap<Integer, Boolean> nums = new HashMap<>();
-         * 		for (int num : array) {
-         * 			int potentialMatch = targetSum - num;
-         *
-         * 			if (nums.containsKey(potentialMatch)) {
-         * 				return potentialMatch > num ? new int[] {num, potentialMatch} : new int[] {potentialMatch, num};
-         *                        } else {
-         * 				nums.put(num, true);
-         *            }* 		}
-         * 		return new int[0];
-         *   }
-         * }
-         */
-
-        // 5. Return results and parse. (result/fails ratio, raw output, list of failed TCs)
-        // 6. Print to user. (via cmdline or to web)
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

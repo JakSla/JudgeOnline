@@ -2,30 +2,17 @@ package pl.ejaksla.onlinejudge.presentation;
 
 public class EvaluationRequestDTO {
 
-    private Long userID;
-    private Long problemID;
-
-    private String submittedCode;
-    private String hiddenTestCasesCode;
-    private String publicTestCasesCode;
-
     private String programmingLanguage;
-    private Boolean isFinalSubmission;
+    private String submittedCode;
+    private String input;
+    private String output;
 
-    public Long getUserID() {
-        return userID;
+    public String getProgrammingLanguage() {
+        return programmingLanguage;
     }
 
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public Long getProblemID() {
-        return problemID;
-    }
-
-    public void setProblemID(Long problemID) {
-        this.problemID = problemID;
+    public void setProgrammingLanguage(String programmingLanguage) {
+        this.programmingLanguage = programmingLanguage;
     }
 
     public String getSubmittedCode() {
@@ -36,48 +23,29 @@ public class EvaluationRequestDTO {
         this.submittedCode = submittedCode;
     }
 
-    public String getHiddenTestCasesCode() {
-        return hiddenTestCasesCode;
+    public String getInput() {
+        return input;
     }
 
-    public void setHiddenTestCasesCode(String hiddenTestCasesCode) {
-        this.hiddenTestCasesCode = hiddenTestCasesCode;
+    public void setInput(String input) {
+        this.input = input;
     }
 
-    public String getPublicTestCasesCode() {
-        return publicTestCasesCode;
+    public String getOutput() {
+        return output;
     }
 
-    public void setPublicTestCasesCode(String publicTestCasesCode) {
-        this.publicTestCasesCode = publicTestCasesCode;
-    }
-
-    public String getProgrammingLanguage() {
-        return programmingLanguage;
-    }
-
-    public void setProgrammingLanguage(String programmingLanguage) {
-        this.programmingLanguage = programmingLanguage;
-    }
-
-    public Boolean getFinalSubmission() {
-        return isFinalSubmission;
-    }
-
-    public void setFinalSubmission(Boolean finalSubmission) {
-        isFinalSubmission = finalSubmission;
+    public void setOutput(String output) {
+        this.output = output;
     }
 
     @Override
     public String toString() {
         return "EvaluationRequestDTO{" +
-                "userID=" + userID +
-                ", problemID=" + problemID +
+                "programmingLanguage='" + programmingLanguage + '\'' +
                 ", submittedCode='" + submittedCode + '\'' +
-                ", hiddenTestCasesCode='" + hiddenTestCasesCode + '\'' +
-                ", publicTestCasesCode='" + publicTestCasesCode + '\'' +
-                ", programmingLanguage='" + programmingLanguage + '\'' +
-                ", isFinalSubmission=" + isFinalSubmission +
+                ", input='" + input + '\'' +
+                ", output='" + output + '\'' +
                 '}';
     }
 }

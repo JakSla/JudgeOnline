@@ -1,6 +1,12 @@
 ## NOTES & PROGRESS
+# 28.05.2019
+Removed happypath solution
+Refactored a lot of code
+KISS, no need for supporting database now
+I need to dockerize this application to linux+openjdk11
++ evolve, test and refactor it a lot
 
-16/17.05.2019
+# 16/17.05.2019
 EvaluationService should be doing the bare minimum - evaluate (sandboxing, compilation, running tests, evaluation)
 Everything it needs should be provided in request:
 - problemID
