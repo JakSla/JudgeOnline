@@ -1,6 +1,8 @@
 package pl.ejaksla.onlinejudge.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -16,14 +18,18 @@ public class User implements java.io.Serializable {
 
     private Long accountType;
 
+    @OneToMany(mappedBy = "user")
+    private Set<Problem> problems = new HashSet<>();
+
     public User() {
     }
 
-    public User(String displayName, String firstName, String lastName, Long accountType) {
-        this.userName = displayName;
+    public User(String userName, String firstName, String lastName, Long accountType, Set<Problem> problems) {
+        this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.accountType = accountType;
+        this.problems = problems;
     }
 
     public Long getId() {
@@ -64,5 +70,13 @@ public class User implements java.io.Serializable {
 
     public void setAccountType(Long accountType) {
         this.accountType = accountType;
+    }
+
+    public Set<Problem> getProblems() {
+        return problems;
+    }
+
+    public void setProblems(Set<Problem> problems) {
+        this.problems = problems;
     }
 }
