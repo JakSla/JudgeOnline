@@ -6,7 +6,11 @@ import pl.ejaksla.onlinejudge.domain.services.ScoringService;
 import javax.tools.*;
 import java.io.*;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
 
 @Service
 public class JavaScoringServiceImpl implements ScoringService {
@@ -59,14 +63,13 @@ public class JavaScoringServiceImpl implements ScoringService {
                                  final String input,
                                  final String output) throws IOException {
 
-        try (PrintWriter out = new PrintWriter("C:\\Users\\ejaksla\\Desktop\\ProgramNew.java")) {
+        try (PrintWriter out = new PrintWriter("C:\\Users\\User\\Desktop\\ProgramNew.java")) {
             out.println(submittedCode);
         }
 
-
         List<String> inputParams = new ArrayList<>();
-        inputParams.add("C:\\Program Files\\Java\\jdk-11.0.2\\bin\\java.exe");
-        inputParams.add("C:\\Users\\ejaksla\\Desktop\\ProgramNew.java");
+        inputParams.add("C:\\Program Files\\Java\\jdk-11.0.1\\bin\\java.exe");
+        inputParams.add("C:\\Users\\User\\Desktop\\ProgramNew.java");
 
         //TODO make sure that input can be handled via System.in, not via args
         List<String> splittledInput = Arrays.asList(input.split(" "));

@@ -1,6 +1,6 @@
 ## NOTES & PROGRESS
 # 28.05.2019
-Removed happypath solution
+Removed happy path solution
 Refactored a lot of code
 KISS, no need for supporting database now
 I need to dockerize this application to linux+openjdk11
