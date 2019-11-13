@@ -1,7 +1,7 @@
-package pl.ejaksla.onlinejudge.domain.services.impl;
+package pl.ejaksla.onlinejudge.problem.domain.services.impl;
 
 import org.springframework.stereotype.Service;
-import pl.ejaksla.onlinejudge.domain.services.ScoringService;
+import pl.ejaksla.onlinejudge.problem.domain.services.ScoringService;
 
 import javax.tools.*;
 import java.io.*;
@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 
 @Service
 public class JavaScoringServiceImpl implements ScoringService {

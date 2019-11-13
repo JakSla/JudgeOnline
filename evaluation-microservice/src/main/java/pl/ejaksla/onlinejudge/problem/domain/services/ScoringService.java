@@ -1,8 +1,4 @@
-package pl.ejaksla.onlinejudge.domain.services;
-
-import pl.ejaksla.onlinejudge.domain.model.EvaluationResult;
-import pl.ejaksla.onlinejudge.domain.model.Problem;
-import pl.ejaksla.onlinejudge.domain.model.Submission;
+package pl.ejaksla.onlinejudge.problem.domain.services;
 
 public interface ScoringService {
 

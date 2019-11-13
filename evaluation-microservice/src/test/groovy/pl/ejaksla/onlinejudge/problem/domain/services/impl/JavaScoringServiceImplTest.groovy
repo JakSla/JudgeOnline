@@ -1,4 +1,4 @@
-package pl.ejaksla.onlinejudge.domain.services.impl
+package pl.ejaksla.onlinejudge.problem.domain.services.impl
 
 import spock.lang.Specification
 

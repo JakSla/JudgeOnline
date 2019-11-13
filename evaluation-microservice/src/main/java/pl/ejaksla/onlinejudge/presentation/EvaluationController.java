@@ -3,7 +3,7 @@ package pl.ejaksla.onlinejudge.presentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.ejaksla.onlinejudge.domain.services.impl.JavaScoringServiceImpl;
+import pl.ejaksla.onlinejudge.problem.domain.services.impl.JavaScoringServiceImpl;
 
 @RestController
 @RequestMapping("/v1/api")

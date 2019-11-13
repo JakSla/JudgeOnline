@@ -1,4 +1,4 @@
-package pl.ejaksla.onlinejudge.domain.model;
+package pl.ejaksla.onlinejudge.problem.domain.model;
 
 public class Submission {
 

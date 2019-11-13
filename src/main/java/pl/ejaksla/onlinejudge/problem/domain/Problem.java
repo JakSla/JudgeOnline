@@ -1,4 +1,4 @@
-package pl.ejaksla.onlinejudge.domain;
+package pl.ejaksla.onlinejudge.problem.domain;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import pl.ejaksla.onlinejudge.problem.dto.ProblemDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -44,16 +45,27 @@ public class Problem {
 
     @Builder
     public Problem(final String name,
-                   final String problemDescription,
+                   final String description,
                    final String sampleInput,
                    final String sampleOutput,
                    final String hiddenInput,
                    final String hiddenOutput) {
         this.name = name;
-        this.description = problemDescription;
+        this.description = description;
         this.sampleInput = sampleInput;
         this.sampleOutput = sampleOutput;
         this.hiddenInput = hiddenInput;
         this.hiddenOutput = hiddenOutput;
+    }
+
+    ProblemDto dto() {
+        return ProblemDto.builder()
+                .name(name)
+                .description(description)
+                .sampleInput(sampleInput)
+                .sampleOutput(sampleOutput)
+                .hiddenInput(hiddenInput)
+                .hiddenOutput(hiddenOutput)
+                .build();
     }
 }
