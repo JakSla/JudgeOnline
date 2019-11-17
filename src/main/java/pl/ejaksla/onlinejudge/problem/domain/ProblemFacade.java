@@ -22,7 +22,7 @@ public class ProblemFacade {
         this.problemCreator = problemCreator;
     }
 
-    ProblemDto addProblem(final ProblemDto problemDto) {
+    public ProblemDto addProblem(final ProblemDto problemDto) {
         requireNonNull(problemDto);
         Problem problem = problemCreator.from(problemDto);
         problemRepository.save(problem);

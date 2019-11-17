@@ -14,6 +14,7 @@ import pl.ejaksla.onlinejudge.problem.dto.ProblemDto;
 @RestController()
 @RequestMapping("/v1/api/problems")
 public class ProblemsController {
+
     private ProblemFacade problemFacade;
 
     public ProblemsController(ProblemFacade problemFacade) {
