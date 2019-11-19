@@ -6,7 +6,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
 @SpringBootApplication
-@EnableSpringDataWebSupport
+//@EnableSpringDataWebSupport
 @EnableAspectJAutoProxy
 public class OnlinejudgeApplication {
 
