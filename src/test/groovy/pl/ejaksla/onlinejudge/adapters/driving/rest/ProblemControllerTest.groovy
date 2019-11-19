@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @Ignore
-class ProblemsControllerTest extends IntegrationSpec implements SampleProblems {
+class ProblemControllerTest extends IntegrationSpec implements SampleProblems {
 
     @Autowired
     ProblemFacade problemFacade

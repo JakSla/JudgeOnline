@@ -1,4 +1,5 @@
 rootProject.name = 'onlinejudge'
 include 'evaluation-microservice'
 include 'jo-zuul'
+include 'eureka'
 

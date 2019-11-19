@@ -15,12 +15,12 @@ class ProblemFacadeTest extends Specification implements SampleProblems {
         facade.addProblem(easyProblem)
 
         expect: "system should return the problem"
-        facade.show(easyProblem.name) == easyProblem
+        facade.showProblem(easyProblem.name) == easyProblem
     }
 
     def "should throw exception when asked for a problem that's not in the system"() {
         when: "system is asked for a problem that is not present"
-        facade.show("some name we don't have")
+        facade.showProblem("some name we don't have")
         then:
         thrown(ProblemNotFoundException)
     }
@@ -31,7 +31,7 @@ class ProblemFacadeTest extends Specification implements SampleProblems {
         facade.addProblem(mediumProblem)
 
         when: "we ask for all problems"
-        Page<ProblemDto> foundFilms = facade.findAll(new PageRequest(0, 10))
+        Page<ProblemDto> foundFilms = facade.findAllProblems(new PageRequest(0, 10))
 
         then: "system returns the problems we have added"
         foundFilms.contains(easyProblem)

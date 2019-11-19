@@ -13,16 +13,16 @@ import pl.ejaksla.onlinejudge.problem.dto.ProblemDto;
  */
 @RestController()
 @RequestMapping("/v1/api/problems")
-public class ProblemsController {
+public class ProblemController {
 
     private ProblemFacade problemFacade;
 
-    public ProblemsController(ProblemFacade problemFacade) {
+    public ProblemController(ProblemFacade problemFacade) {
         this.problemFacade = problemFacade;
     }
 
     @GetMapping()
     Page<ProblemDto> getProblems(Pageable pageable) {
-        return problemFacade.findAll(pageable);
+        return problemFacade.findAllProblems(pageable);
     }
 }

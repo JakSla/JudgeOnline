@@ -29,16 +29,16 @@ public class ProblemFacade {
         return problem.dto();
     }
 
-    public ProblemDto show(final String name) {
+    public ProblemDto showProblem(final String name) {
         requireNonNull(name);
         Problem problem = problemRepository.findOneOrThrow(name);
         return problem.dto();
     }
 
-    public Page<ProblemDto> findAll(Pageable pageable) {
+    public Page<ProblemDto> findAllProblems(Pageable pageable) {
         requireNonNull(pageable);
         return problemRepository
                 .findAll(pageable)
-                .map(problem -> problem.dto());
+                .map(Problem::dto);
     }
 }
